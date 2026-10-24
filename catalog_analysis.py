@@ -165,7 +165,18 @@ def format_report_line(movie):
     )
 
 
+def titles_sorted_by_rating(movies):
+    ranked_movies = sorted(movies, key=lambda movie: movie["rating"], reverse=True)
+    return [movie["title"] for movie in ranked_movies]
+
+
+def top_n_by_rating(movies, n=3):
+    if n <= 0:
+        return []
+    ranked_movies = sorted(movies, key=lambda movie: movie["rating"], reverse=True)
+    return [(movie["title"], movie["rating"]) for movie in ranked_movies[:n]]
+
+
 if __name__ == "__main__":
-    print(normalize_title("silent hours"))
-    print(make_slug("Silent Hours"))
-    print(format_report_line(movies[7]))
+    print(titles_sorted_by_rating(movies))
+    print(top_n_by_rating(movies))

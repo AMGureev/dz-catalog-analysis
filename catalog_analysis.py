@@ -146,8 +146,26 @@ def count_long_movies(movies, threshold=120):
     return count
 
 
+def normalize_title(title):
+    words = title.split()
+    return " ".join(word[0].upper() + word[1:] for word in words)
+
+
+def make_slug(title):
+    return normalize_title(title).lower().replace(" ", "-")
+
+
+def format_report_line(movie):
+    title = normalize_title(movie["title"])
+    duration = duration_in_hours(movie["duration_min"])
+    genres = ", ".join(sorted(movie["genres"]))
+    return (
+        f'"{title}" ({movie["year"]}) — {movie["rating"]:.1f}/10, '
+        f"{duration}, жанры: {genres}"
+    )
+
+
 if __name__ == "__main__":
-    print_non_comedies(movies)
-    print_first_masterpiece(movies)
-    print_first_masterpiece([m for m in movies if m["rating"] <= 9.0])
-    print(count_long_movies(movies))
+    print(normalize_title("silent hours"))
+    print(make_slug("Silent Hours"))
+    print(format_report_line(movies[7]))

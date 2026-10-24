@@ -177,6 +177,33 @@ def top_n_by_rating(movies, n=3):
     return [(movie["title"], movie["rating"]) for movie in ranked_movies[:n]]
 
 
+def count_by_genre(movies):
+    counts = {}
+    for movie in movies:
+        for genre in sorted(movie["genres"]):
+            counts[genre] = counts.get(genre, 0) + 1
+    return counts
+
+
+def actor_filmography(movies):
+    filmography = {}
+    for movie in movies:
+        for actor in movie["actors"]:
+            filmography[actor] = filmography.get(actor, [])
+            filmography[actor].append(movie["title"])
+    return filmography
+
+
+def ratings_above_average(movies):
+    mean_rating = average_rating(movies)
+    return {
+        movie["title"]: movie["rating"]
+        for movie in movies
+        if movie["rating"] > mean_rating
+    }
+
+
 if __name__ == "__main__":
-    print(titles_sorted_by_rating(movies))
-    print(top_n_by_rating(movies))
+    print(count_by_genre(movies))
+    print(actor_filmography(movies))
+    print(ratings_above_average(movies))
